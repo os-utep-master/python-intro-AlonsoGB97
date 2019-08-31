@@ -1,5 +1,5 @@
+#Alonso Granados
 import sys
-import re         # regular expression tools
 
 if len(sys.argv) is not 3:
     print("Correct usage: wordCountTest.py <input file> <output file>")
@@ -11,18 +11,31 @@ dict = {}
 
 with open(inputName, 'r') as inputFile:
     for line in inputFile:
-        line = line.replace(',', '')
-        line = line.replace('.', '')
-        # get rid of newline characters
+        #Removes punctuation from line
+        line = line.replace(',', ' ')
+        line = line.replace(':', ' ')
+        line = line.replace(';', ' ')
+        line = line.replace('.', ' ')
+        line = line.replace('-', ' ')
+        line = line.replace('\'', ' ')
+        line = line.replace('\"', ' ')
+        #Removes EOL
         line = line.strip()
-        # split line on whitespace and punctuation
-        words = re.split('[ \t]', line)
-        print(words)
+        #Checks for empty line
+        if line == '':
+            continue
+        #Split line on whitespace
+        words = line.split()
+        #Count words
         for word in words:
             if word.lower() in dict:
                 dict[word.lower()] += 1
             else:
                 dict[word.lower()] = 1
     inputFile.close()
-for x in dict:
-    print(dict[x])
+
+#Sort Alphabetical
+sortedDict = sorted(dict)
+with open(outputName, 'w') as outputFile:
+    for x in sortedDict:
+        outputFile.write("{} {}\n".format(x, dict[x]))
